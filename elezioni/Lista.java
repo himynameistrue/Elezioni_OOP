@@ -10,7 +10,7 @@ public class Lista {
 	private String nomeLista;
 	private String motto;
 	private Cittadino capolista = null;
-	
+	private long votiLista = 0;
 	private List<Candidato> candidati = new ArrayList<>();
 	
 
@@ -59,6 +59,15 @@ public class Lista {
 				.filter(x -> x != x.getLista().getCapolista())
 				.collect(Collectors.toList());
 	}
+	
+	public List<Candidato> getTuttiCandidati(){
+		return candidati;
+	}
+	
+	public void incVoti(){
+		votiLista++;
+	}
+	
 	
 	
 	public long getNumeroVoti(){

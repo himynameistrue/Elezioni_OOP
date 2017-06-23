@@ -3,6 +3,7 @@ package elezioni;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class Elezione {
@@ -11,7 +12,6 @@ public class Elezione {
 	Map<String, Lista> liste = new HashMap<>();
 
 	public Elezione(){
-		
 	}
 	
 	public Cittadino aggiungiElettore(String nome, String cognome){
@@ -32,7 +32,6 @@ public class Elezione {
 		if(liste.containsKey(lista.getNome())!= false){
 			liste.put(lista.getNome(), lista);
 		}
-		
 	}
 
     /**
@@ -43,8 +42,26 @@ public class Elezione {
      * @throws TaglioNonPermesso se il candidato per cui si esprime
      * 							la preferenza non appartiene alla lista
      */	
-	public void vota(Cittadino votante, String lista, String nome, String cognome)
-		throws TentatoDoppioVoto, TaglioNonPermesso{
+	public void vota(Cittadino votante, String lista, String nome, String cognome) throws TentatoDoppioVoto, TaglioNonPermesso{
+		if(elettori.get(nome + " " + cognome).isCandidato()){
+			liste.get(lista).incVoti();
+			boolean candidatoInLista = false;
+			for(Candidato c : liste.get(lista).getTuttiCandidati()){
+				if(c.getNome() == nome && c.getCognome() == cognome){
+					c.incVoto();
+					candidatoInLista = true;
+				}
+			}
+			if(candidatoInLista == false){
+				throw new TaglioNonPermesso("candidato non il lista");
+			}
+			if(((Elettore) votante).haVotato()){
+				throw new TentatoDoppioVoto("l'elettore ha già votato");
+			}
+			((Elettore) votante).vota();
+			
+				
+		}
 	}
 
 	/**
@@ -52,8 +69,12 @@ public class Elezione {
 	 * il voto di preferenza va automaticamente al capolista
 	 * @throws TentatoDoppioVoto se il cittadino ha gi� votato
 	 */	
-	public void vota(Cittadino votante, String lista)
-		throws TentatoDoppioVoto{
+	public void vota(Cittadino votante, String lista) throws TentatoDoppioVoto{
+		if(((Elettore) votante).haVotato()){
+			throw new TentatoDoppioVoto("l'elettore ha già votato");
+		}
+		liste.get(lista).incVoti();
+		((Candidato) liste.get(lista).getCapolista()).incVoto();
 	}
 	
 	public long getNumeroVotanti(){
