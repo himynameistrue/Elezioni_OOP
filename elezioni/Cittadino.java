@@ -2,6 +2,7 @@ package elezioni;
 
 
 public interface Cittadino {
+
 	public String getNome();
 	public String getCognome();
 	public boolean haVotato();
@@ -9,5 +10,3 @@ public interface Cittadino {
 	public boolean isCandidato();
 	public long getNumeroVoti();
 }
-
-//hyf

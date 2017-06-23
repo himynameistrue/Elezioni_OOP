@@ -1,28 +1,38 @@
 package elezioni;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Elezione {
-	//hs
+	
+	Map<String, Elettore> elettori = new HashMap<>();
+	Map<String, Lista> liste = new HashMap<>();
 
 	public Elezione(){
 		
 	}
 	
 	public Cittadino aggiungiElettore(String nome, String cognome){
-		return null;
+		Elettore c = new Elettore(nome, cognome);
+		elettori.put(nome+ " " +cognome, c);
+		return c;
 	}
 	
 	public Collection getElettori(){
-		return null;
+		return elettori.values();
 	}
 	
 	public Cittadino getElettore(String nome, String cognome){
-		return null;
+		return elettori.get(nome + " " + cognome) ;
 	}
 	
 	public void registraLista(Lista lista){
+		if(liste.containsKey(lista.getNome())!= false){
+			liste.put(lista.getNome(), lista);
+		}
+		
 	}
 
     /**
