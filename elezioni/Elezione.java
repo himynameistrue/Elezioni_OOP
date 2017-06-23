@@ -1,9 +1,13 @@
 package elezioni;
 
+import static java.util.Comparator.comparing;
+
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 
 public class Elezione {
@@ -78,15 +82,34 @@ public class Elezione {
 	}
 	
 	public long getNumeroVotanti(){
-		return -1;
+		return elettori.values().stream()
+				.filter(x -> x.haVotato() == true)
+				.count();
 	}
 	
+	
+	private Comparator<Candidato> cmp= new Comparator<Candidato>(){
+		@Override
+		public int compare(Candidato l1, Candidato l2){
+			long sub = l2.getNumeroVoti() - l1.getNumeroVoti();
+			if (sub > 0){ return -1;}
+		if(sub < 0){return 1;}
+			return 0;
+		}
+	};
+	
 	public Collection getRisultatiListe(){
-		return null;
+		return liste.values().stream()
+//				.sorted(cmp(l1, l2))
+				.sorted(comparing((Lista l)->l.getNumeroVoti()).reversed())
+				.collect(Collectors.toList());
 	}
 
-	public Collection getRisultatiCandidati(){
-		return null;
+	public Collection getRisultatiCandidati(){		
+		return liste.values().stream()
+				.flatMap( l -> l.getTuttiCandidati().stream())
+				.sorted(cmp)
+				.collect(Collectors.toList());
 	}
 	
 	

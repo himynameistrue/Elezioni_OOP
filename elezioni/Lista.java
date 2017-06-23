@@ -68,13 +68,11 @@ public class Lista {
 		votiLista++;
 	}
 	
-	
-	
 	public long getNumeroVoti(){
-		return -1;
+		return votiLista;
 	}
 
 	public double getPercentualeVoti(){
-		return -1.1;
+		return 1.1;
 	}
 }
