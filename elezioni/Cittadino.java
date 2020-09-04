@@ -9,4 +9,5 @@ public interface Cittadino {
 	public boolean isCapolista();
 	public boolean isCandidato();
 	public long getNumeroVoti();
+	public long PROVA();
 }
